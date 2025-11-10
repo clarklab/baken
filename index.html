@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baken - Because Apparently You Can't Figure Out Oven Math</title>
+    <meta name="description" content="Baken helps you cook multiple things at once without burning your house down. Revolutionary, we know.">
+    <meta name="keywords" content="oven calculator, cooking timer, multiple dishes, thermal physics for dummies, kitchen wizardry">
+    <meta property="og:title" content="Baken - Multi-Dish Cooking Calculator for the Mathematically Challenged">
+    <meta property="og:description" content="Finally, a tool that does the oven math your brain refuses to. Cook multiple dishes simultaneously like you actually know what you're doing.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Baken - Because Your Oven Doesn't Come With a PhD">
+    <meta name="twitter:description" content="Stop overcooking one thing and undercooking another. Let Baken do the temperature math while you pretend to be a chef.">
+    <link rel="icon" type="image/svg+xml" href="np_oven_3557222_000000.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tan': {
+                            50: '#faf8f5',
+                            100: '#f5f1ea',
+                            200: '#ebe3d5',
+                            300: '#e0d5c0',
+                        },
+                        'burnt-orange': {
+                            50: '#fef3ed',
+                            400: '#e67e50',
+                            500: '#d9663a',
+                            600: '#c75a32',
+                            700: '#b44e2a',
+                        }
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Lato', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .header-left {
+                justify-content: center;
+            }
+            .header-right {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+        }
+    </style>
+</head>
+<body class="bg-tan-50 min-h-screen py-6 md:py-12">
+    <div class="container mx-auto max-w-4xl px-4">
+        <div class="flex items-center justify-between mb-8 md:mb-12 header-container">
+            <div class="flex items-center gap-3 md:gap-4 header-left">
+                <img src="np_oven_3557222_000000.svg" alt="Oven icon" class="w-12 h-12 md:w-16 md:h-16">
+                <h1 class="text-3xl md:text-5xl font-bold text-burnt-orange-700 tracking-tight">Baken</h1>
+            </div>
+            <p class="text-xl text-burnt-orange-600 font-light header-right">The Art of Simultaneous Cooking</p>
+        </div>
+
+        <!-- Input Section -->
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-8 border border-tan-200">
+            <h2 class="text-xl md:text-2xl font-semibold text-burnt-orange-700 mb-4 md:mb-6 text-center">Your Dishes</h2>
+            
+            <!-- Item 1 -->
+            <div class="mb-5 p-3 md:p-5 bg-tan-100 rounded-lg border border-tan-200">
+                <input type="text" id="name1" placeholder="Dish name (e.g., Roasted Chicken)" 
+                    class="w-full mb-3 px-3 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                <div class="flex gap-2 md:gap-3">
+                    <input type="number" id="temp1" placeholder="Temp (°F)" 
+                        class="flex-1 px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                    <input type="number" id="time1" placeholder="Minutes" 
+                        class="flex-1 px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="mb-5 p-3 md:p-5 bg-tan-100 rounded-lg border border-tan-200">
+                <input type="text" id="name2" placeholder="Dish name (e.g., Roasted Vegetables)" 
+                    class="w-full mb-3 px-3 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                <div class="flex gap-2 md:gap-3">
+                    <input type="number" id="temp2" placeholder="Temp (°F)" 
+                        class="flex-1 px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                    <input type="number" id="time2" placeholder="Minutes" 
+                        class="flex-1 px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="mb-6 p-3 md:p-5 bg-tan-100 rounded-lg border border-tan-200">
+                <input type="text" id="name3" placeholder="Dish name (optional)" 
+                    class="w-full mb-3 px-3 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                <div class="flex gap-2 md:gap-3">
+                    <input type="number" id="temp3" placeholder="Temp (°F)" 
+                        class="flex-1 px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                    <input type="number" id="time3" placeholder="Minutes" 
+                        class="flex-1 px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 focus:border-transparent bg-white">
+                </div>
+            </div>
+
+            <button onclick="calculate()" 
+                class="w-full bg-burnt-orange-600 hover:bg-burnt-orange-700 text-white font-semibold py-3 md:py-4 px-4 md:px-6 text-sm md:text-base rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+                Calculate Cooking Times
+            </button>
+        </div>
+
+        <!-- Results Section (hidden initially) -->
+        <div id="results" class="hidden">
+            <!-- Safe Option -->
+            <div class="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-6 border border-tan-200">
+                <h3 class="text-xl md:text-2xl font-semibold text-burnt-orange-700 mb-3">🛡️ Safe Option</h3>
+                <p class="text-sm md:text-base text-gray-600 mb-4 font-light">Cook everything at the lowest temperature for maximum time. Safest for making sure everything cooks through.</p>
+                <div id="safeResults" class="space-y-3"></div>
+            </div>
+
+            <!-- Smart Option -->
+            <div class="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-6 border border-tan-200">
+                <h3 class="text-xl md:text-2xl font-semibold text-burnt-orange-700 mb-3">🧠 Smart Option</h3>
+                <p class="text-sm md:text-base text-gray-600 mb-4 font-light">Uses a middle temperature for better results. More efficient and crispier!</p>
+                <div id="smartResults" class="space-y-3"></div>
+            </div>
+
+            <!-- Timing Section -->
+            <div class="bg-white rounded-xl shadow-lg p-4 md:p-8 border border-tan-200">
+                <h3 class="text-xl md:text-2xl font-semibold text-burnt-orange-700 mb-4">⏰ When Should I Start?</h3>
+                <p class="text-sm md:text-base text-gray-600 mb-5 font-light">Enter when you want everything ready:</p>
+                
+                <div class="flex gap-2 md:gap-3 mb-6">
+                    <select id="readyHour" class="px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 bg-white">
+                        <!-- Will be populated by JavaScript -->
+                    </select>
+                    <select id="readyMinute" class="px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 bg-white">
+                        <!-- Will be populated by JavaScript -->
+                    </select>
+                    <select id="readyAmPm" class="px-2 md:px-4 py-2 md:py-3 text-sm md:text-base border border-tan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-burnt-orange-500 bg-white">
+                        <option value="AM">AM</option>
+                        <option value="PM" selected>PM</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                    <button onclick="calculateTiming('safe')" 
+                        class="flex-1 bg-burnt-orange-500 hover:bg-burnt-orange-600 text-white font-semibold py-3 px-4 text-sm md:text-base rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+                        Get Safe Timing
+                    </button>
+                    <button onclick="calculateTiming('smart')" 
+                        class="flex-1 bg-burnt-orange-600 hover:bg-burnt-orange-700 text-white font-semibold py-3 px-4 text-sm md:text-base rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+                        Get Smart Timing
+                    </button>
+                </div>
+
+                <div id="timingResults" class="hidden">
+                    <div class="bg-tan-100 border-l-4 border-burnt-orange-500 p-4 md:p-5 rounded-lg">
+                        <h4 class="font-semibold text-burnt-orange-700 mb-3 text-base md:text-lg">Your Schedule:</h4>
+                        <div id="timingSchedule" class="space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="text-center mt-12 md:mt-16 pb-8">
+            <p class="text-tan-300 text-xs md:text-sm font-light px-4">Made with ❤️ for home cooks who refuse to cook one dish at a time</p>
+        </footer>
+    </div>
+
+    <script>
+        // Room temperature baseline for calculations (in Fahrenheit)
+        const ROOM_TEMP = 70;
+
+        // Store the calculated results for later use in timing calculations
+        let calculatedResults = {
+            safe: null,
+            smart: null
+        };
+
+        /**
+         * Main calculation function
+         * Gets values from form, validates them, and displays both safe and smart cooking options
+         */
+        function calculate() {
+            // Get all the items from the form
+            const items = [];
+            
+            // Loop through the 3 possible items and collect their data
+            for (let i = 1; i <= 3; i++) {
+                const name = document.getElementById(`name${i}`).value.trim();
+                const temp = parseFloat(document.getElementById(`temp${i}`).value);
+                const time = parseFloat(document.getElementById(`time${i}`).value);
+                
+                // Only add items that have all three fields filled in
+                if (name && !isNaN(temp) && !isNaN(time)) {
+                    items.push({ name, temp, time });
+                }
+            }
+
+            // Make sure we have at least one item to work with
+            if (items.length === 0) {
+                alert('Please enter at least one dish with temperature and time!');
+                return;
+            }
+
+            // Calculate both options
+            const safeOption = calculateSafeOption(items);
+            const smartOption = calculateSmartOption(items);
+
+            // Store results for timing calculations
+            calculatedResults.safe = safeOption;
+            calculatedResults.smart = smartOption;
+
+            // Display the results
+            displayResults(safeOption, 'safeResults');
+            displayResults(smartOption, 'smartResults');
+
+            // Show the results section
+            document.getElementById('results').classList.remove('hidden');
+
+            // Populate time dropdowns
+            populateTimeDropdowns();
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /**
+         * Calculate the "safe" option: use the lowest temperature and adjust all times
+         * Formula: newTime = oldTime × (oldTemp - roomTemp) / (newTemp - roomTemp)
+         */
+        function calculateSafeOption(items) {
+            // Find the lowest temperature among all items
+            const lowestTemp = Math.min(...items.map(item => item.temp));
+            
+            // Calculate adjusted time for each item
+            const adjustedItems = items.map(item => {
+                const adjustedTime = adjustTime(item.time, item.temp, lowestTemp);
+                return {
+                    name: item.name,
+                    originalTemp: item.temp,
+                    originalTime: item.time,
+                    adjustedTime: adjustedTime
+                };
+            });
+
+            // The total cook time is the longest adjusted time
+            const maxTime = Math.max(...adjustedItems.map(item => item.adjustedTime));
+
+            return {
+                temp: lowestTemp,
+                totalTime: Math.ceil(maxTime),
+                items: adjustedItems
+            };
+        }
+
+        /**
+         * Calculate the "smart" option: use a compromise temperature (average of all temps)
+         * This gives better cooking results while still being safe
+         */
+        function calculateSmartOption(items) {
+            // Calculate the average temperature (compromise)
+            const avgTemp = Math.round(
+                items.reduce((sum, item) => sum + item.temp, 0) / items.length
+            );
+            
+            // Calculate adjusted time for each item at the compromise temp
+            const adjustedItems = items.map(item => {
+                const adjustedTime = adjustTime(item.time, item.temp, avgTemp);
+                return {
+                    name: item.name,
+                    originalTemp: item.temp,
+                    originalTime: item.time,
+                    adjustedTime: adjustedTime
+                };
+            });
+
+            // The total cook time is the longest adjusted time
+            const maxTime = Math.max(...adjustedItems.map(item => item.adjustedTime));
+
+            return {
+                temp: avgTemp,
+                totalTime: Math.ceil(maxTime),
+                items: adjustedItems
+            };
+        }
+
+        /**
+         * Adjust cooking time based on temperature change
+         * Formula: newTime = oldTime × (oldTemp - roomTemp) / (newTemp - roomTemp)
+         * 
+         * This works because heat energy = temperature × time
+         * So if we lower temp, we need to increase time proportionally
+         */
+        function adjustTime(originalTime, originalTemp, newTemp) {
+            // If temps are the same, no adjustment needed
+            if (originalTemp === newTemp) {
+                return originalTime;
+            }
+
+            // Apply the formula
+            const adjustedTime = originalTime * (originalTemp - ROOM_TEMP) / (newTemp - ROOM_TEMP);
+            
+            return adjustedTime;
+        }
+
+        /**
+         * Display the results in a nice format
+         */
+        function displayResults(result, elementId) {
+            const container = document.getElementById(elementId);
+            
+            let html = `
+                <div class="bg-burnt-orange-50 border-2 border-burnt-orange-400 rounded-lg p-3 md:p-4 mb-4">
+                    <p class="font-semibold text-lg md:text-xl text-burnt-orange-700">Set oven to ${result.temp}°F</p>
+                    <p class="text-sm md:text-base text-gray-700 font-light">Total cooking time: ${result.totalTime} minutes</p>
+                </div>
+            `;
+
+            // Show details for each item
+            result.items.forEach(item => {
+                const wasAdjusted = item.originalTemp !== result.temp;
+                html += `
+                    <div class="bg-tan-100 border border-tan-300 rounded-lg p-3 md:p-4 mb-3">
+                        <p class="font-semibold text-sm md:text-base text-burnt-orange-700">${item.name}</p>
+                        <p class="text-xs md:text-sm text-gray-600 font-light">
+                            Original: ${item.originalTime} min @ ${item.originalTemp}°F
+                            ${wasAdjusted ? `→ Adjusted: ${Math.ceil(item.adjustedTime)} min @ ${result.temp}°F` : '(no change needed)'}
+                        </p>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        /**
+         * Populate the hour and minute dropdowns for the ready time
+         */
+        function populateTimeDropdowns() {
+            const hourSelect = document.getElementById('readyHour');
+            const minuteSelect = document.getElementById('readyMinute');
+
+            // Clear existing options
+            hourSelect.innerHTML = '';
+            minuteSelect.innerHTML = '';
+
+            // Add hours (1-12)
+            for (let i = 1; i <= 12; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                if (i === 5) option.selected = true; // Default to 5
+                hourSelect.appendChild(option);
+            }
+
+            // Add minutes (0-59 in 5-minute increments)
+            for (let i = 0; i < 60; i += 5) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i.toString().padStart(2, '0');
+                if (i === 0) option.selected = true; // Default to :00
+                minuteSelect.appendChild(option);
+            }
+        }
+
+        /**
+         * Calculate when to start each dish to have everything ready at the target time
+         * @param {string} mode - either 'safe' or 'smart'
+         */
+        function calculateTiming(mode) {
+            const result = calculatedResults[mode];
+            
+            if (!result) {
+                alert('Please calculate cooking times first!');
+                return;
+            }
+
+            // Get the ready time from the form
+            const hour = parseInt(document.getElementById('readyHour').value);
+            const minute = parseInt(document.getElementById('readyMinute').value);
+            const ampm = document.getElementById('readyAmPm').value;
+
+            // Convert to 24-hour format for easier calculation
+            let hour24 = hour;
+            if (ampm === 'PM' && hour !== 12) hour24 += 12;
+            if (ampm === 'AM' && hour === 12) hour24 = 0;
+
+            // Create a Date object for the ready time (using today as the date)
+            const readyTime = new Date();
+            readyTime.setHours(hour24, minute, 0, 0);
+
+            // Calculate when each item should go in
+            const schedule = [];
+
+            result.items.forEach(item => {
+                // Calculate start time by subtracting cook time from ready time
+                const cookTimeMs = Math.ceil(item.adjustedTime) * 60 * 1000; // Convert minutes to milliseconds
+                const startTime = new Date(readyTime.getTime() - cookTimeMs);
+
+                schedule.push({
+                    name: item.name,
+                    startTime: startTime,
+                    cookTime: Math.ceil(item.adjustedTime)
+                });
+            });
+
+            // Sort by start time (earliest first)
+            schedule.sort((a, b) => a.startTime - b.startTime);
+
+            // Display the schedule
+            displayTimingSchedule(schedule, readyTime, result.temp, mode);
+        }
+
+        /**
+         * Display the timing schedule in a user-friendly format
+         */
+        function displayTimingSchedule(schedule, readyTime, temp, mode) {
+            const container = document.getElementById('timingSchedule');
+            const modeText = mode === 'safe' ? 'Safe' : 'Smart';
+
+            let html = `<p class="text-xs md:text-sm text-gray-600 mb-4 font-light">Using <strong>${modeText} Option</strong> at <strong>${temp}°F</strong></p>`;
+
+            schedule.forEach((item, index) => {
+                const timeStr = formatTime(item.startTime);
+                html += `
+                    <p class="text-sm md:text-base text-gray-800">
+                        <span class="font-semibold text-burnt-orange-700">${timeStr}</span> - Put in ${item.name} 
+                        <span class="text-gray-600 font-light">(cook for ${item.cookTime} min)</span>
+                    </p>
+                `;
+            });
+
+            html += `
+                <p class="text-sm md:text-base text-gray-800 mt-3 pt-3 border-t border-tan-300">
+                    <span class="font-semibold text-burnt-orange-700">${formatTime(readyTime)}</span> - Everything is ready! 🎉
+                </p>
+            `;
+
+            container.innerHTML = html;
+            document.getElementById('timingResults').classList.remove('hidden');
+        }
+
+        /**
+         * Format a Date object into a readable time string (e.g., "4:30 PM")
+         */
+        function formatTime(date) {
+            let hours = date.getHours();
+            const minutes = date.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0 should be 12
+            
+            const minutesStr = minutes.toString().padStart(2, '0');
+            
+            return `${hours}:${minutesStr} ${ampm}`;
+        }
+    </script>
+</body>
+</html>
