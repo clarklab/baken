@@ -51,6 +51,38 @@
         h1, h2, h3, h4 {
             font-family: 'Playfair Display', serif;
         }
+        .unit-toggle {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(217, 102, 58, 0.92);
+            color: white;
+            border-radius: 9999px;
+            padding: 0.35rem 0.8rem;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            cursor: pointer;
+            z-index: 50;
+        }
+        .unit-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+        }
+        .unit-toggle-option {
+            opacity: 0.6;
+        }
+        .unit-toggle-option.active {
+            opacity: 1;
+        }
+        .unit-toggle-divider {
+            opacity: 0.45;
+        }
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -182,6 +214,11 @@
             <p class="text-tan-300 text-xs md:text-sm font-light px-4">Made with ❤️ for home cooks who refuse to cook one dish at a time</p>
         </footer>
     </div>
+  <button id="unitToggle" class="unit-toggle" type="button" onclick="toggleTempUnit()" aria-label="Toggle temperature unit">
+      <span id="unitToggleF" class="unit-toggle-option active">°F</span>
+      <span class="unit-toggle-divider">/</span>
+      <span id="unitToggleC" class="unit-toggle-option">°C</span>
+  </button>
 
     <script>
         // Room temperature baseline for calculations (in Fahrenheit)
@@ -192,6 +229,54 @@
             safe: null,
             smart: null
         };
+
+      let currentTempUnit = 'F';
+      const tempInputIds = ['temp1', 'temp2', 'temp3'];
+      let lastTiming = {
+          schedule: null,
+          readyTime: null,
+          temp: null,
+          mode: null
+      };
+
+      function getTempUnitSymbol() {
+          return currentTempUnit === 'F' ? '°F' : '°C';
+      }
+
+      function updateTempPlaceholders() {
+          const unitSymbol = getTempUnitSymbol();
+          tempInputIds.forEach(id => {
+              const input = document.getElementById(id);
+              if (input) {
+                  input.placeholder = `Temp (${unitSymbol})`;
+              }
+          });
+      }
+
+      function applyUnitToggleStyles() {
+          const isFahrenheit = currentTempUnit === 'F';
+          document.getElementById('unitToggleF').classList.toggle('active', isFahrenheit);
+          document.getElementById('unitToggleC').classList.toggle('active', !isFahrenheit);
+      }
+
+      function refreshDisplayedUnits() {
+          if (calculatedResults.safe) {
+              displayResults(calculatedResults.safe, 'safeResults');
+          }
+          if (calculatedResults.smart) {
+              displayResults(calculatedResults.smart, 'smartResults');
+          }
+          if (lastTiming.schedule) {
+              displayTimingSchedule(lastTiming.schedule, lastTiming.readyTime, lastTiming.temp, lastTiming.mode);
+          }
+      }
+
+      function toggleTempUnit() {
+          currentTempUnit = currentTempUnit === 'F' ? 'C' : 'F';
+          applyUnitToggleStyles();
+          updateTempPlaceholders();
+          refreshDisplayedUnits();
+      }
 
         /**
          * Main calculation function
@@ -325,10 +410,11 @@
          */
         function displayResults(result, elementId) {
             const container = document.getElementById(elementId);
+          const unitSymbol = getTempUnitSymbol();
             
             let html = `
                 <div class="bg-burnt-orange-50 border-2 border-burnt-orange-400 rounded-lg p-3 md:p-4 mb-4">
-                    <p class="font-semibold text-lg md:text-xl text-burnt-orange-700">Set oven to ${result.temp}°F</p>
+                  <p class="font-semibold text-lg md:text-xl text-burnt-orange-700">Set oven to ${result.temp}${unitSymbol}</p>
                     <p class="text-sm md:text-base text-gray-700 font-light">Total cooking time: ${result.totalTime} minutes</p>
                 </div>
             `;
@@ -340,8 +426,8 @@
                     <div class="bg-tan-100 border border-tan-300 rounded-lg p-3 md:p-4 mb-3">
                         <p class="font-semibold text-sm md:text-base text-burnt-orange-700">${item.name}</p>
                         <p class="text-xs md:text-sm text-gray-600 font-light">
-                            Original: ${item.originalTime} min @ ${item.originalTemp}°F
-                            ${wasAdjusted ? `→ Adjusted: ${Math.ceil(item.adjustedTime)} min @ ${result.temp}°F` : '(no change needed)'}
+                          Original: ${item.originalTime} min @ ${item.originalTemp}${unitSymbol}
+                          ${wasAdjusted ? `→ Adjusted: ${Math.ceil(item.adjustedTime)} min @ ${result.temp}${unitSymbol}` : '(no change needed)'}
                         </p>
                     </div>
                 `;
@@ -425,7 +511,18 @@
             schedule.sort((a, b) => a.startTime - b.startTime);
 
             // Display the schedule
-            displayTimingSchedule(schedule, readyTime, result.temp, mode);
+          const scheduleCopy = schedule.map(item => ({
+              ...item,
+              startTime: new Date(item.startTime)
+          }));
+          const readyTimeCopy = new Date(readyTime);
+          lastTiming = {
+              schedule: scheduleCopy,
+              readyTime: readyTimeCopy,
+              temp: result.temp,
+              mode
+          };
+          displayTimingSchedule(scheduleCopy, readyTimeCopy, result.temp, mode);
         }
 
         /**
@@ -434,8 +531,9 @@
         function displayTimingSchedule(schedule, readyTime, temp, mode) {
             const container = document.getElementById('timingSchedule');
             const modeText = mode === 'safe' ? 'Safe' : 'Smart';
+          const unitSymbol = getTempUnitSymbol();
 
-            let html = `<p class="text-xs md:text-sm text-gray-600 mb-4 font-light">Using <strong>${modeText} Option</strong> at <strong>${temp}°F</strong></p>`;
+          let html = `<p class="text-xs md:text-sm text-gray-600 mb-4 font-light">Using <strong>${modeText} Option</strong> at <strong>${temp}${unitSymbol}</strong></p>`;
 
             schedule.forEach((item, index) => {
                 const timeStr = formatTime(item.startTime);
@@ -472,6 +570,9 @@
             
             return `${hours}:${minutesStr} ${ampm}`;
         }
+
+      updateTempPlaceholders();
+      applyUnitToggleStyles();
     </script>
 </body>
 </html>
