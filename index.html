@@ -9,10 +9,19 @@
     <meta property="og:title" content="Baken - Multi-Dish Cooking Calculator for the Mathematically Challenged">
     <meta property="og:description" content="Finally, a tool that does the oven math your brain refuses to. Cook multiple dishes simultaneously like you actually know what you're doing.">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:url" content="https://baken.superfun.games">
+    <meta property="og:image" content="https://baken.superfun.games/unfurl.png">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Baken - Because Your Oven Doesn't Come With a PhD">
     <meta name="twitter:description" content="Stop overcooking one thing and undercooking another. Let Baken do the temperature math while you pretend to be a chef.">
-    <link rel="icon" type="image/svg+xml" href="np_oven_3557222_000000.svg">
+    <meta name="twitter:image" content="https://baken.superfun.games/unfurl.png">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#c75a32">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Baken">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600&display=swap" rel="stylesheet">
@@ -221,6 +230,32 @@
   </button>
 
     <script>
+        // PWA Installation support
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            // Optionally show install button or automatically trigger
+            // For now, let the browser handle it naturally
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('Baken has been installed!');
+            deferredPrompt = null;
+        });
+
+        // Register service worker for PWA support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {
+                    // Service worker registration failed, that's ok - app still works
+                });
+            });
+        }
+
         // Room temperature baseline for calculations (in Fahrenheit)
         const ROOM_TEMP = 70;
 

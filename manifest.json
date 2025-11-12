@@ -1,0 +1,21 @@
+{
+  "name": "Baken - The Art of Simultaneous Cooking",
+  "short_name": "Baken",
+  "description": "Cook multiple dishes at once without burning your house down",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#c75a32",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "utilities", "lifestyle"],
+  "screenshots": []
+}
+
